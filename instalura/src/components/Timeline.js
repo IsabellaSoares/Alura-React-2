@@ -10,11 +10,22 @@ export default class Timeline extends Component {
 		this.login = this.props.login;
 	}
 
-	componentWillMount(){
-        PubSub.subscribe('timeline',(topico,fotos) => {
+	componentWillMount() {
+		PubSub.subscribe('timeline', (topico, fotos) => {
 			this.setState({ fotos: fotos.fotos });
-        });
-    }
+		});
+	}
+
+	componentDidMount() {
+		this.carregaFotos();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.login !== undefined) {
+			this.login = nextProps.login;
+			this.carregaFotos();
+		}
+	}
 
 	carregaFotos() {
 		let urlPerfil;
@@ -31,27 +42,54 @@ export default class Timeline extends Component {
 		});
 	}
 
-	componentDidMount() {
-		this.carregaFotos();
+	like(fotoId) {
+		fetch(`http://localhost:8080/api/fotos/${fotoId}/like?X-AUTH-TOKEN=${localStorage.getItem('auth-token')}`, {
+			method: 'POST'
+		})
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error('não foi possível realizar o like da foto');
+				}
+			})
+			.then((liker) => {
+				PubSub.publish('atualiza-liker', { fotoId, liker });
+			});
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.login !== undefined) {
-			this.login = nextProps.login;
-			this.carregaFotos();
-		}
+	comenta(fotoId, textoComentario) {
+		const requestInfo = {
+			method: 'POST',
+			body: JSON.stringify({ texto: textoComentario }),
+			headers: new Headers({
+				'Content-type': 'application/json'
+			})
+		};
+
+		fetch(
+			`http://localhost:8080/api/fotos/${fotoId}/comment?X-AUTH-TOKEN=${localStorage.getItem('auth-token')}`,
+			requestInfo
+		)
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error('não foi possível comentar');
+				}
+			})
+			.then((novoComentario) => {
+				PubSub.publish('novos-comentarios', { fotoId, novoComentario });
+			});
 	}
 
 	render() {
 		return (
 			<div className="fotos container">
-				<CSSTransitionGroup
-					transitionName="timeline"
-					transitionEnterTimeout={500}
-					transitionLeaveTimeout={300}>
-					{
-					this.state.fotos.map(foto => <FotoItem key={foto.id} foto={foto}/>)
-					}
+				<CSSTransitionGroup transitionName="timeline" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+					{this.state.fotos.map((foto) => (
+						<FotoItem key={foto.id} foto={foto} like={this.like} comenta={this.comenta} />
+					))}
 				</CSSTransitionGroup>
 			</div>
 		);

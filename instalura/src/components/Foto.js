@@ -12,49 +12,13 @@ class FotoAtualizacoes extends Component {
 
 	like(event) {
 		event.preventDefault();
-
-		fetch(
-			`http://localhost:8080/api/fotos/${this.props.foto.id}/like?X-AUTH-TOKEN=${localStorage.getItem('auth-token')}`,
-			{ method: 'POST' }
-		)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('não foi possível realizar o like da foto');
-      }
-    })
-    .then((liker) => {
-      this.setState({ likeada: !this.state.likeada });
-      PubSub.publish('atualiza-liker', { fotoId: this.props.foto.id, liker });
-    });
+		this.setState({ likeada: !this.state.likeada });
+		this.props.like(this.props.foto.id);
 	}
 
 	comenta(event) {
-    event.preventDefault();
-    
-    const requestInfo = {
-      method:'POST',
-      body: JSON.stringify({texto: this.comentario.value}),
-      headers: new Headers({
-        'Content-type': 'application/json'
-      })
-    };
-
-		fetch(
-			`http://localhost:8080/api/fotos/${this.props.foto.id}/comment?X-AUTH-TOKEN=${localStorage.getItem('auth-token')}`,
-			requestInfo
-		)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('não foi possível comentar');
-      }
-    })
-    .then((novoComentario) => {
-      PubSub.publish('novos-comentarios', { fotoId: this.props.foto.id, novoComentario });
-    });
+		event.preventDefault();
+		this.props.comenta(this.props.foto.id, this.comentario.value);		
 	}
 
 	render() {
@@ -70,8 +34,8 @@ class FotoAtualizacoes extends Component {
 					<input
 						type="text"
 						placeholder="Adicione um comentário..."
-            className="fotoAtualizacoes-form-campo"
-            ref={input => this.comentario = input}
+						className="fotoAtualizacoes-form-campo"
+						ref={(input) => (this.comentario = input)}
 					/>
 					<input type="submit" value="Comentar!" className="fotoAtualizacoes-form-submit" />
 				</form>
@@ -84,8 +48,8 @@ class FotoInfo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-      likers: this.props.foto.likers,
-      comentarios:this.props.foto.comentarios
+			likers: this.props.foto.likers,
+			comentarios: this.props.foto.comentarios
 		};
 	}
 
@@ -100,14 +64,14 @@ class FotoInfo extends Component {
 				const novosLikers = this.state.likers.filter((liker) => liker.login !== infoLiker.liker.login);
 				this.setState({ likers: novosLikers });
 			}
-    });
-    
-    PubSub.subscribe('novos-comentarios', (topico, infoComentario) => {
-      if(this.props.foto.id === infoComentario.fotoId){
-        const novosComentarios = this.state.comentarios.concat(infoComentario.novoComentario);
-        this.setState({comentarios:novosComentarios});
-      }
-    });
+		});
+
+		PubSub.subscribe('novos-comentarios', (topico, infoComentario) => {
+			if (this.props.foto.id === infoComentario.fotoId) {
+				const novosComentarios = this.state.comentarios.concat(infoComentario.novoComentario);
+				this.setState({ comentarios: novosComentarios });
+			}
+		});
 	}
 
 	render() {
@@ -169,7 +133,7 @@ export default class FotoItem extends Component {
 				<FotoHeader foto={this.props.foto} />
 				<img alt="foto" className="foto-src" src={this.props.foto.urlFoto} />
 				<FotoInfo foto={this.props.foto} />
-				<FotoAtualizacoes foto={this.props.foto} />
+				<FotoAtualizacoes foto={this.props.foto} like={this.props.like} comenta={this.props.comenta} />
 			</div>
 		);
 	}
