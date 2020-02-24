@@ -10,7 +10,7 @@ The concepts used in this course was:
 - Routes
 - Container components and Life cicles
 - Flux architecture
-- Redux library
+- React-Redux library
 - Immutable.js
 - Server side rendering
 
