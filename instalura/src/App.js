@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Header from './componentes/Header';
-import Timeline from './componentes/Timeline';
+import Header from './components/Header';
+import Timeline from './components/Timeline';
 import {createStore,applyMiddleware,combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {timeline} from './reducers/timeline';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TimelineApi from '../logicas/TimelineApi';
+import TimelineApi from '../logics/TimelineApi';
 
 export default class Header extends Component {
 
