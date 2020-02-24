@@ -2,7 +2,7 @@
 
 This is the project for "React Part 2" and "React Part 3" courses, powered by Alura.
 
-This application simulates an social platform likes Instagram, with features like timeline, comments, likes and users search. To login in the application use this credentials: user: "alots", password: "123456".
+This application simulates an social platform likes Instagram, with features like timeline, comments, likes and users search. To login in the application use this credentials: `user: "alots"`, `password: "123456"`.
 
 The concepts used in this course was:
 
