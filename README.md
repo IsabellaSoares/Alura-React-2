@@ -1,8 +1,8 @@
 # React Project - Alura Courses
-## React parte 2: Container components e o ciclo de vida do react
-## React parte 3: A arquitetura flux, implementação do Redux e server side rendering
+**React parte 2: Container components e o ciclo de vida do react**
+**React parte 3: A arquitetura flux, implementação do Redux e server side rendering**
 
-This is the project for "React Part 2" and "React Part 3" courses, powered by Alura.
+This is the project for _"React Part 2"_ and _"React Part 3"_ courses, powered by Alura.
 
 This application simulates an social platform likes Instagram, with features like timeline, comments, likes and users search. To login in the application use this credentials: `user: "alots"`, `password: "123456"`.
 
