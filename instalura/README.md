@@ -1,4 +1,6 @@
 # React Project - Alura Courses
+## React parte 2: Container components e o ciclo de vida do react
+## React parte 3: A arquitetura flux, implementação do Redux e server side rendering
 
 This is the project for "React Part 2" and "React Part 3" courses, powered by Alura.
 
@@ -14,4 +16,4 @@ The concepts used in this course was:
 - Immutable.js
 - Server side rendering
 
-Use `npm install` and `npm start` to run the application.
+[Certificate link](https://cursos.alura.com.br/certificate/cdc179d6-6ec9-4fba-982c-f7d529af03ba)
