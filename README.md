@@ -1,5 +1,7 @@
 # React Project - Alura Courses
+
 **React parte 2: Container components e o ciclo de vida do react**
+
 **React parte 3: A arquitetura flux, implementação do Redux e server side rendering**
 
 This is the project for _"React Part 2"_ and _"React Part 3"_ courses, powered by Alura.
